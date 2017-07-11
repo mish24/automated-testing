@@ -8,7 +8,7 @@ from pom.pageUrls import PageUrls
 
 from shift.utils import (
     create_admin,
-    create_volunteer
+    create_pcuser
     )
 
 import re
@@ -33,7 +33,7 @@ class TestAccessControl(LiveServerTestCase):
 
     def setUp(self):
         admin = create_admin()
-        volunteer = create_volunteer()
+        volunteer = create_pcuser()
 
     def tearDown(self):
         pass
@@ -74,7 +74,7 @@ class TestAccessControl(LiveServerTestCase):
 
         self.assertNotEqual(authentication_page.get_incorrect_login_message(), None)
 
-    def test_correct_volunteer_credentials(self):
+    def test_correct_pcuser_credentials(self):
         '''
         Method to simulate logging in of a valid volunteer user and check if
         they are redirected to '/home'
@@ -89,7 +89,7 @@ class TestAccessControl(LiveServerTestCase):
             authentication_page.get_incorrect_login_message()
         authentication_page.logout()
 
-    def test_incorrect_volunteer_credentials(self):
+    def test_incorrect_pcuser_credentials(self):
         '''
         Method to simulate logging in of a Invalid volunteer user and check if
         they are displayed an error and redirected to login page again.

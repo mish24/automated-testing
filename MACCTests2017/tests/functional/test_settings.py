@@ -14,9 +14,7 @@ from shift.utils import (
     create_event_with_details,
     create_job_with_details,
     create_shift_with_details,
-    create_volunteer,
-    register_volunteer_for_shift_utility,
-    create_organization
+    create_pcuser
     )
 
 from selenium import webdriver
@@ -39,8 +37,7 @@ class Settings(LiveServerTestCase):
         - Create Job without any event
         - Edit Job
         - Create/Edit Job with invalid dates
-        - Delete Job without Associated Shift
-        - Delete Job with Shifts
+      
     Shift:
         - Null values in Create and edit shift form
         - Create Shift without any Job
@@ -49,12 +46,12 @@ class Settings(LiveServerTestCase):
         - Delete shift with volunteer
         - Create/Edit Shift with invalid timing
         - Create/Edit Shift with invalid date
-    Organization:
+    Location:
         - Create Organization
         - Edit Organization
         - Replication of Organization
-        - Delete Org's with registered volunteers
-        - Delete Org without registered volunteers
+        - Delete Org's with registered pcusers
+        - Delete Org without registered pcusers
     Additional Note:
     It needs to be ensured that the dates in the test functions
     given below are later than the current date so that there are no
@@ -89,17 +86,17 @@ class Settings(LiveServerTestCase):
         self.authentication_page.server_url = self.live_server_url
         self.authentication_page.login({'username' : 'admin', 'password' : 'admin'})
 
-    def delete_event_from_list(self):
+    def delete_profile_from_list(self):
         settings = self.settings
         self.assertEqual(settings.element_by_xpath(
             self.elements.DELETE_EVENT).text, 'Delete')
         settings.element_by_xpath(
             self.elements.DELETE_EVENT+'//a').click()
         self.assertNotEqual(settings.get_deletion_box(), None)
-        self.assertEqual(settings.get_deletion_context(), 'Delete Event')
+        self.assertEqual(settings.get_deletion_context(), 'Delete Profile')
         settings.submit_form()
 
-    def delete_job_from_list(self):
+    def delete_profile_data_from_list(self):
         settings = self.settings
         self.assertEqual(settings.element_by_xpath(
             self.elements.DELETE_JOB).text, 'Delete')
@@ -107,20 +104,9 @@ class Settings(LiveServerTestCase):
             self.elements.DELETE_JOB+'//a').click()
 
         self.assertNotEqual(settings.get_deletion_box(), None)
-        self.assertEqual(settings.get_deletion_context(), 'Delete Job')
+        self.assertEqual(settings.get_deletion_context(), 'Delete Profile Data')
         settings.submit_form()
 
-    def delete_shift_from_list(self):
-        settings = self.settings
-        self.assertEqual(settings.element_by_xpath(
-            self.elements.DELETE_SHIFT).text, 'Delete')
-        settings.element_by_xpath(
-            self.elements.DELETE_SHIFT+'//a').click()
-
-        # confirm on delete
-        self.assertNotEqual(settings.get_deletion_box(), None)
-        self.assertEqual(settings.get_deletion_context(), 'Delete Shift')
-        settings.submit_form()
 
     def delete_organization_from_list(self):
         settings = self.settings
@@ -957,4 +943,4 @@ class Settings(LiveServerTestCase):
 
         # database check to ensure that organization is not deleted
         self.assertEqual(len(Organization.objects.all()), 1)
-self.assertNotEqual(len(Organization.objects.filter(name=org.name)), 0)
+	self.assertNotEqual(len(Organization.objects.filter(name=org.name)), 0)
