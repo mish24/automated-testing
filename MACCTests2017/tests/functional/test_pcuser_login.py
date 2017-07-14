@@ -33,7 +33,7 @@ class TestAccessControl(LiveServerTestCase):
 
     def setUp(self):
         admin = create_admin()
-        volunteer = create_pcuser()
+        pcuser = create_pcuser()
 
     def tearDown(self):
         pass
