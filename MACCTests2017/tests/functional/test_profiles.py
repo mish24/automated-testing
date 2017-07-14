@@ -728,7 +728,7 @@ class Settings(LiveServerTestCase):
         # database check to ensure that shift is deleted
         self.assertEqual(len(Shift.objects.all()), 0)
 
-    def test_delete_shift_with_volunteer(self):
+    def test_delete_shift_with_pcuser(self):
         # register event first to create job
         event = ['event-name', '2017-08-21', '2017-09-28']
         created_event = create_event_with_details(event)
@@ -741,10 +741,10 @@ class Settings(LiveServerTestCase):
         shift = ['2017-08-21', '09:00', '12:00', '10', created_job]
         created_shift = create_shift_with_details(shift)
 
-        # create volunteer for shift
-        volunteer = create_volunteer()
-        shift_volunteer = register_volunteer_for_shift_utility(
-            created_shift, volunteer)
+        # create pcuser for shift
+        pcuser = create_pcuser()
+        shift_pcuser = register_pcuser_for_shift_utility(
+            created_shift, pcuser)
 
         settings = self.settings
         settings.live_server_url = self.live_server_url
@@ -755,7 +755,7 @@ class Settings(LiveServerTestCase):
 
         # check error message displayed and shift not deleted
         self.assertEqual(settings.get_template_error_message(),
-            'You cannot delete a shift that a volunteer has signed up for.')
+            'You cannot delete a shift that a pcuser has signed up for.')
 
         # database check to ensure that shift is not deleted
         self.assertEqual(len(Shift.objects.all()), 1)
@@ -844,10 +844,10 @@ class Settings(LiveServerTestCase):
     def test_delete_org_with_associated_users(self):
         # create org
         org = create_organization()
-        volunteer = create_volunteer()
+        pcuser = create_pcuser()
 
-        volunteer.organization = org
-        volunteer.save()
+        pcuser.organization = org
+        pcuser.save()
 
         # delete org
         settings = self.settings
