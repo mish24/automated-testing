@@ -100,5 +100,5 @@ class EventsPage(BasePage):
         return self.element_by_class_name(self.elements.HELP_BLOCK)
 
     def get_help_blocks(self):
-        return self.elements_by_class_name(self.elements.HELP_BLOCK)
+        return self.elements_by_class_name(self.elements.HELP_BLOCKS)
 
